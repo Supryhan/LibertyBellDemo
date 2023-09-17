@@ -10,13 +10,15 @@ import java.util.List;
 public interface LibertyGameService {
 
     default BetResult makeBet(int userId) {
-        System.out.println("User #" + userId + " made bet.");
-        List<ReelSymbol> generated = generateReels();
-        Pair<List<ReelSymbol>, Integer> combinations = findCombinations(generated);
-        int currentWin = calculate(combinations);
-        User user = processUser(userId, currentWin);
-        BetResult result = new BetResult(userId, currentWin, user.getTotalAmount(), generated, combinations.getValue0());
-        return result;
+        synchronized (this) {
+            System.out.println("User #" + userId + " made bet.");
+            List<ReelSymbol> generated = generateReels();
+            Pair<List<ReelSymbol>, Integer> combinations = findCombinations(generated);
+            int currentWin = calculate(combinations);
+            User user = processUser(userId, currentWin);
+            BetResult result = new BetResult(userId, currentWin, user.getTotalAmount(), generated, combinations.getValue0());
+            return result;
+        }
     }
 
     List<ReelSymbol> generateReels();
