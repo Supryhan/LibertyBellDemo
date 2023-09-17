@@ -15,12 +15,16 @@ import java.util.List;
 import java.util.Random;
 
 @Service
-public class SimpleLibertyService implements LibertyGameService {
+public class SimpleLibertyGameService implements LibertyGameService {
 
     @Autowired
     SimpleUserService userService;
 
     private Random random = new Random();
+    @Override
+    public boolean validated(int userId) {
+        return userService.getUser(userId).getTotalAmount() > 0;
+    }
     @Override
     public List<ReelSymbol> generateReels() {
 
@@ -59,7 +63,7 @@ public class SimpleLibertyService implements LibertyGameService {
     public User processUser(int userId, int currentWin) {
         User user = userService.getUser(userId);
         user.setLastWin(currentWin);
-        user.setTotalAmount(user.getTotalAmount() + currentWin);
+        user.setTotalAmount(user.getTotalAmount() + currentWin - 1);
         userService.updateUser(userId, user);
         return user;
     }

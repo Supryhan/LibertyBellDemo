@@ -18,7 +18,7 @@ public class InMemoryUserPersistence implements UserPersistence {
     @Override
     public User create(String login, String pass) {
         int id = userStorage.size() + 1;
-        userStorage.put(id, new User(id, login, 0, 0));
+        userStorage.put(id, new User(id, login, 100, 0));
         return userStorage.get(id);
     }
 

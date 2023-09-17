@@ -15,7 +15,7 @@ public class UserController {
 
     private UserService userService;
 
-    @PostMapping("/user")
+    @GetMapping("/user")
     public int addUser(@RequestParam String login, @RequestParam String pass){
         int userId = userService.addUser(login, pass);
         return userId;
