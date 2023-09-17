@@ -1,7 +1,9 @@
 package com.twg.liberty.service.impl;
 
 import com.twg.liberty.model.User;
+import com.twg.liberty.service.UserPersistence;
 import com.twg.liberty.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -12,7 +14,8 @@ import java.util.Map;
 @Service
 public class SimpleUserService implements UserService {
 
-    private Map<Integer, User> userStorage = new HashMap<>();
+    @Autowired
+    UserPersistence userPersistence;
 
     @Override
     public boolean login(String login, String pass) {
@@ -27,30 +30,28 @@ public class SimpleUserService implements UserService {
     @Override
     public int addUser(String login, String pass) {
         System.out.println("new user logged in");
-        int id = userStorage.size() + 1;
-        userStorage.put(id, new User(id, login, 0, 0));
-        return id;
+        User newUser = userPersistence.create(login, pass);
+        return newUser.getId();
     }
 
     @Override
     public User getUser(int id) {
-        return userStorage.get(id);
+        return userPersistence.read(id);
     }
 
     @Override
     public List<User> getUsers() {
-        return new LinkedList();
+        return userPersistence.read();
     }
 
     public User updateUser(int userId, User user) {
-        User storedUser = userStorage.get(userId);
-        userStorage.put(userId, user);
+        User storedUser = userPersistence.update(userId, user);
         return storedUser;
     }
 
     @Override
     public void removeUser(int id) {
-        userStorage.remove(id);
+        userPersistence.delete(id);
     }
 
 }

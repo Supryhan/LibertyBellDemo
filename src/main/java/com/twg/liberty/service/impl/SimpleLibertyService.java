@@ -31,6 +31,7 @@ public class SimpleLibertyService implements LibertyGameService {
         ReelSymbol reelSymbol1 = ReelStrips.reelStrip1.get(randomIndex1);
         ReelSymbol reelSymbol2 = ReelStrips.reelStrip1.get(randomIndex2);
         ReelSymbol reelSymbol3 = ReelStrips.reelStrip1.get(randomIndex3);
+
         String logText = String.format("Generated reels for user: [%s, %s, %s]", reelSymbol1, reelSymbol2, reelSymbol3);
         System.out.println(logText);
         return new LinkedList<>(){{

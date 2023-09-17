@@ -6,6 +6,9 @@ import com.twg.liberty.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @AllArgsConstructor
 public class UserController {
@@ -13,19 +16,20 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/user")
-    public void addUser(@RequestParam String login, @RequestParam String pass){
-        userService.addUser(login, pass);
+    public int addUser(@RequestParam String login, @RequestParam String pass){
+        int userId = userService.addUser(login, pass);
+        return userId;
     }
 
     @GetMapping("/user/{id}")
     public UserDTO getUser(@PathVariable("id") int id){
         User user = userService.getUser(id);
-        return new UserDTO(user.getId(), user.getName(), user.getTotalAmount(), user.getLastWin());
+        return convertToDto(user);
     }
 
     @GetMapping("/users")
-    public void getUsers(){
-        userService.getUsers();
+    public List<UserDTO> getUsers(){
+        return userService.getUsers().stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
     @DeleteMapping("/user/{id}")
@@ -33,4 +37,7 @@ public class UserController {
         userService.removeUser(id);
     }
 
+    private UserDTO convertToDto(User user) {
+        return new UserDTO(user.getId(), user.getName(), user.getTotalAmount(), user.getLastWin());
+    }
 }
