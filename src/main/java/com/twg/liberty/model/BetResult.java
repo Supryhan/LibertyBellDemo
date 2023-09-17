@@ -10,6 +10,7 @@ import java.util.List;
 public class BetResult {
     int userId;
     int winAmount;
-    List<ReelSymbol> reels;
-    List<ReelSymbol> winLine;
+    int totalAmount;
+    List<ReelSymbol> reelsGenerated;
+    List<ReelSymbol> winReelsLine;
 }

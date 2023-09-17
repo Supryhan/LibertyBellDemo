@@ -42,6 +42,12 @@ public class SimpleUserService implements UserService {
         return new LinkedList();
     }
 
+    public User updateUser(int userId, User user) {
+        User storedUser = userStorage.get(userId);
+        userStorage.put(userId, user);
+        return storedUser;
+    }
+
     @Override
     public void removeUser(int id) {
         userStorage.remove(id);
